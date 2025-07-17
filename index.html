@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Station Shuttle Ticket</title>
+  <style>
+    body {
+      font-family: Saira Semi Condensed, Arial, sans-serif;
+      background: #fff;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .container {
+      max-width: 28rem;
+      margin: auto;
+      padding: 1rem;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .header h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .booking-date {
+      font-size: 11px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .ticket-box {
+      background-image: url(./assets/card.png);
+      background-size: 100% 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      position: relative;
+      padding: 18px 10px;
+      /* left: -10px; */
+    }
+
+    .ticket-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 5px;
+      background-color: #00e95d;
+      text-align: center;
+      cursor: pointer;
+      height: 90px;
+      width: 90px;
+    }
+
+    .ticket-header .time {
+      color: #fff;
+      /* padding: 0.8rem 0.8rem; */
+      padding-bottom: 0;
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .ticket-header .slot {
+      color: #fff;
+      font-weight: 600;
+      padding: 0 0.8rem;
+      font-size: 48px;
+    }
+
+    .ticket-message {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .ticket-message strong {
+      color: #000;
+    }
+
+    .note {
+      color: red;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      line-height: 21px;
+    }
+
+    .view-ticket-btn {
+      width: 100%;
+      background-color: #00e95d;
+      color: white;
+      border: none;
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+      z-index: 10;
+    }
+
+    .view-ticket-btn span {
+      font-weight: normal;
+      font-size: 0.9rem;
+    }
+
+    .cancel-btn {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid red;
+      background: none;
+      color: red;
+      font-weight: bold;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .footer-note {
+      margin-top: 2rem;
+      font-size: 0.55rem;
+      text-align: center;
+      color: red;
+      font-weight: 600;
+      line-height: 12px;
+    }
+
+    .ticket-header-main {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .ticket-border {
+      content: "";
+      position: absolute;
+      top: 30px;
+      left: 25px;
+      height: calc(100% - 70px);
+      width: calc(100% - 53px);
+      border: 1px dashed #c4c4c4;
+      border-radius: 5px;
+      z-index: 1;
+    }
+
+    .ticket-border-1 {
+      border: 1px dashed #c4c4c4;
+      height: calc(100% - 70px);
+      width: calc(100% - 53px);
+      position: absolute;
+      top: 30px;
+      left: 25px;
+    }
+
+    .ticket-main {
+      padding: 35px;
+    }
+
+    .ticket-title {
+      font-weight: 600;
+      font-size: 18px;
+      color: #6c6969;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .train-icon-container {
+      display: flex;
+    }
+
+    .train-icon-container p {
+      font-weight: 600;
+      color: #202020;
+      font-size: 19px;
+      line-height: 1;
+    }
+
+    .logout-btn {
+      width: 20px;
+      padding: 8px;
+      background-color: red;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .logout-btn img {
+      height: 100%;
+      width: 100%;
+    }
+
+    .message-top {
+      margin-bottom: 17px;
+      color: #000;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .message-buttom,
+    .message-buttom strong {
+      color: #6c6969;
+      font-size: 13px;
+    }
+
+    /* Popup Overlay */
+    #popup-form {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    /* Popup Box */
+    .popup-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 350px;
+      box-sizing: border-box;
+      margin: 1rem;
+    }
+
+    .popup-box h3 {
+      margin-top: 0;
+      font-size: 1.25rem;
+      text-align: center;
+    }
+
+    .popup-box label {
+      display: block;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .popup-box input,
+    .popup-box select {
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      margin-top: 0.3rem;
+      box-sizing: border-box;
+    }
+
+    .popup-box button {
+      width: 100%;
+      padding: 0.75rem;
+      background: green;
+      color: white;
+      border: none;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* Mobile adjustments */
+    @media screen and (max-width: 400px) {
+      .popup-box {
+        padding: 1rem;
+      }
+
+      .popup-box h3 {
+        font-size: 1rem;
+      }
+
+      .popup-box label {
+        font-size: 0.85rem;
+      }
+
+      .popup-box input,
+      .popup-box select {
+        font-size: 0.9rem;
+      }
+
+      .popup-box button {
+        font-size: 0.95rem;
+      }
+    }
+
+    .ticket-success-container {
+      padding: 26px;
+    }
+
+    .success-main-content {
+      padding-top: 23px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .left-content div {
+      margin-bottom: 10px;
+    }
+
+    .route-wrapper {
+      display: flex;
+      margin-top: 17px;
+      border-top: 1px dashed #ccc;
+    }
+
+    .route-line {
+      display: flex;
+      align-items: center;
+      /* margin-top: 12px;
+      margin-left: 12px; */
+      margin: 12px 0 5px 12px;
+    }
+
+    .route-dots {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 12px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin: 3px 0;
+    }
+
+    .green {
+      background-color: #00e95d;
+    }
+
+    .red {
+      background-color: red;
+    }
+
+    .connector {
+      width: 2px;
+      height: 10px;
+      background: repeating-linear-gradient(to bottom,
+          #ccc,
+          #ccc 4px,
+          transparent 4px,
+          transparent 8px);
+      margin: 2px 0;
+    }
+
+    .left-content div {
+      font-size: 11px;
+      font-weight: 600;
+      color: #8e8d8d;
+    }
+
+    .left-content .name strong {
+      font-size: 18px;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .left-content .ticket-number strong {
+      font-size: 18px;
+      color: #6c6969;
+      font-weight: 600;
+    }
+
+    .left-content .ticket-date strong {
+      font-size: 14px;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .left-content .countdown strong {
+      font-size: 16px;
+      color: red;
+      font-weight: 600;
+    }
+
+    .route-destination div {
+      font-size: 10px;
+      font-weight: 600;
+      color: #6c6969;
+    }
+
+    .route-destination {
+      margin-right: 14px;
+    }
+
+    .route-labels div {
+      font-size: 12px;
+      color: #000;
+      font-weight: 600;
+    }
+
+    .pickup {
+      margin-bottom: 14px;
+    }
+
+    /* success tick */
+
+    .icon-wrapper {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin: 0 auto;
+      top: 50%;
+      transform: translateY(-10%);
+    }
+
+    .success-icon {
+      width: 30px;
+      height: 30px;
+      background-color: #00e95d;
+      border-radius: 50%;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      box-shadow: 0 0 15px rgba(0, 233, 93, 0.3);
+    }
+
+    .pulse-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 70px;
+      height: 70px;
+      transform: translate(-50%, -50%);
+      z-index: 1;
+    }
+
+    .pulse-ring span {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background-color: #00e95d;
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+      animation-delay: calc(var(--i) * 0.2s);
+    }
+
+    /* Circle positioning */
+    .pulse-ring span:nth-child(1) {
+      top: 0%;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+
+    .pulse-ring span:nth-child(2) {
+      top: 20%;
+      left: 82%;
+      transform: translate(-50%, -50%);
+    }
+
+    .pulse-ring span:nth-child(3) {
+      top: 50%;
+      left: 100%;
+      transform: translate(-50%, -50%);
+    }
+
+    .pulse-ring span:nth-child(4) {
+      top: 80%;
+      left: 82%;
+      transform: translate(-50%, -50%);
+    }
+
+    .pulse-ring span:nth-child(5) {
+      top: 100%;
+      left: 50%;
+      transform: translate(-50%, -100%);
+    }
+
+    .pulse-ring span:nth-child(6) {
+      top: 80%;
+      left: 18%;
+      transform: translate(-50%, -50%);
+    }
+
+    .pulse-ring span:nth-child(7) {
+      top: 50%;
+      left: 0%;
+      transform: translate(50%, -50%);
+    }
+
+    .pulse-ring span:nth-child(8) {
+      top: 20%;
+      left: 18%;
+      transform: translate(-50%, -50%);
+    }
+
+    .pulse-ring span:nth-child(9) {
+      top: 0%;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 0.5;
+      }
+
+      50% {
+        transform: scale(1.8);
+        opacity: 1;
+      }
+    }
+
+    /* Optional: Add a subtle tick animation */
+    .checkmark {
+      font-size: 20px;
+      z-index: 1;
+      transform: scale(0);
+      animation: scaleIn 0.3s ease-out forwards 0.2s;
+    }
+
+    @keyframes scaleIn {
+      to {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    .blink {
+      animation: blink 1s infinite;
+    }
+
+    #second-ticket {
+      position: relative;
+    }
+
+    .ticket-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      /* Black with transparency */
+      border-radius: 5px;
+      z-index: 99;
+      pointer-events: none;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Popup Form -->
+  <div id="popup-form">
+    <div class="popup-box">
+      <h3>Enter Ticket Info</h3>
+      <label>
+        Name:
+        <input type="text" id="name" required />
+      </label>
+      <label>
+        Bus Number:
+        <input type="text" id="busNumber" required />
+      </label>
+      <label>
+        Bus Route:
+        <select id="busRoute" required>
+          <option value="T">Thane</option>
+          <option value="D">Dahisar</option>
+          <option value="B">Borivali</option>
+        </select>
+      </label>
+      <button onclick="submitForm()">Submit</button>
+    </div>
+  </div>
+
+  <!-- Ticket Container -->
+  <div class="container" id="ticket-container" style="display: none;">
+    <div class="header">
+      <div class="train-icon-container">
+        <img src="./assets/train.0fe10e1d.svg" alt="train icon" />
+        <p>STATION SHUTTLE <br /> SERVICE</p>
+      </div>
+      <div class="booking-date" id="booking-date">
+        BOOKING FOR: <br />
+      </div>
+      <div class="logout-btn">
+        <img src="./assets/logout.bb17a611.svg" alt="logout icon" />
+      </div>
+    </div>
+    <div class="ticket-title">TICKET</div>
+
+    <!-- First Ticket -->
+    <div class="ticket-box" id="first-ticket">
+      <div class="ticket-border"></div>
+      <div class="ticket-border-1"></div>
+      <div class="ticket-main">
+        <div class="ticket-header-main">
+          <div class="ticket-message">
+            <div class="message-top">Your ticket has been booked in...</div>
+            <div class="message-buttom">
+              To view your ticket, please click on <br />
+              the <strong>VIEW TICKET</strong> button below.
+            </div>
+          </div>
+          <div class="ticket-header">
+            <div class="ticket-header-content">
+              <div class="time">6:30 PM</div>
+              <div class="slot" id="slot-code">T6</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="note">
+          Note: Your ticket can be viewed for only 3 seconds after button is clicked. VIEW TICKET button to be clicked
+          by Security personnel only!
+        </div>
+
+        <button type="button" class="view-ticket-btn" onclick="showSecondTicket()">
+          VIEW TICKET <br />
+        </button>
+      </div>
+    </div>
+
+    <!-- Second Ticket -->
+    <div class="ticket-box" id="second-ticket" style="display: none;">
+      <div class="ticket-border"></div>
+      <div class="ticket-success-container">
+        <div class="icon-wrapper">
+          <div class="success-icon">
+            <div class="checkmark">✔</div>
+          </div>
+          <div class="pulse-ring">
+            <span style="--i: 0;"></span>
+            <span style="--i: 1;"></span>
+            <span style="--i: 2;"></span>
+            <span style="--i: 3;"></span>
+            <span style="--i: 4;"></span>
+            <span style="--i: 5;"></span>
+            <span style="--i: 6;"></span>
+            <span style="--i: 7;"></span>
+            <span style="--i: 8;"></span>
+          </div>
+        </div>
+        <div class="success-main-content">
+          <div class="left-content">
+            <div class="name">Name:<br /><strong id="ticket-name">N/A</strong></div>
+            <div class="ticket-number">TICKET NUMBER:<br /><strong id="ticket-number"
+                class="blink">110725/221/38</strong></div>
+            <div class="ticket-date">Trip Details for:<br /><strong id="ticket-date">N/A</strong></div>
+            <div class="countdown">TICKET EXPIRES IN:<br /><strong id="countdown">10 Seconds</strong></div>
+          </div>
+          <div class="ticket-header">
+            <div class="ticket-header-content">
+              <div class="time">6:30 PM</div>
+              <div class="slot" id="ticket-slot">T6</div>
+            </div>
+          </div>
+        </div>
+        <div class="route-wrapper">
+          <div class="route-line">
+            <div class="route-destination">
+              <div class="pickup">PICKUP</div>
+              <div class="drop">DROP</div>
+            </div>
+            <div class="route-dots">
+              <div class="dot green"></div>
+              <div class="connector"></div>
+              <div class="dot red"></div>
+            </div>
+            <div class="route-labels">
+              <div class="pickup">GCorp, Thane</div>
+              <div class="drop">Thane E Stn.</div>
+            </div>
+          </div>
+        </div>
+        <div id="ticket-overlay" class="ticket-overlay">
+          <div class="expired-text">YOUR TICKET VIEWING HAS EXPIRED</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cancel Button -->
+    <!--<div class="cancel-btn-container">
+      <button class="cancel-btn">CANCEL TRIP</button>
+    </div>-->
+
+    <!-- Footer Note -->
+    <div class="footer-note">
+      Cancellation of tickets is allowed only up to 30 minutes before the start time.<br />
+      Users cannot make a new booking until the existing booking is cancelled.<br />
+      The old booking system will remain live and functional until 01-01-2025.<br />
+      For any issues, please fill out the feedback form available on the homepage.
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    let ticketInfo = {};
+    let countdownInterval;
+
+    function submitForm() {
+      const name = document.getElementById("name").value.trim();
+      const busNumber = document.getElementById("busNumber").value.trim();
+      const busRoute = document.getElementById("busRoute").value;
+
+      if (!name || !busNumber || !busRoute) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      const slotCode = `${busRoute}${busNumber}`;
+      const today = new Date();
+      const formattedDate = today.toLocaleDateString("en-GB").split("/").join(".");
+
+      // Second ticket date formatted as "Jul 16, 2025"
+      const options = { year: 'numeric', month: 'short', day: '2-digit' };
+      const formattedDateSecond = today.toLocaleDateString('en-US', options);
+
+      // Save for second ticket
+      ticketInfo = {
+        name: name,
+        slot: slotCode,
+        date: formattedDateSecond
+      };
+
+      document.getElementById("slot-code").textContent = slotCode;
+      document.getElementById("booking-date").innerHTML = `BOOKING FOR: <br>${formattedDate}`;
+
+      document.getElementById("popup-form").style.display = "none";
+      document.getElementById("ticket-container").style.display = "block";
+    }
+
+    function showSecondTicket() {
+      console.log("addsf")
+      document.getElementById("first-ticket").style.display = "none";
+      document.getElementById("second-ticket").style.display = "block";
+
+      // Populate second ticket
+      document.getElementById("ticket-name").textContent = ticketInfo.name;
+      document.getElementById("ticket-date").textContent = ticketInfo.date;
+      document.getElementById("ticket-slot").textContent = ticketInfo.slot;
+
+      // Reset countdown to 3 seconds
+      let secondsLeft = 10;
+      document.getElementById("countdown").textContent = `${secondsLeft} Seconds`;
+
+      countdownInterval = setInterval(() => {
+        secondsLeft--;
+        document.getElementById("countdown").textContent = `${secondsLeft} Seconds`;
+
+        if (secondsLeft <= 0) {
+          clearInterval(countdownInterval);
+          document.getElementById("countdown").textContent = "00 Seconds";
+
+          // ? Show the transparent black overlay
+          // document.getElementById("ticket-overlay").style.display = "block";
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+
+
+</html>
