@@ -806,7 +806,7 @@ ticketInfo = {
 function showSecondTicket() {
   document.getElementById("first-ticket").style.display = "none";
   document.getElementById("second-ticket").style.display = "block";
-  console.log(ticketInfo.drop);
+  console.log(document.querySelector("#second-ticket .route-labels .drop"));
 
   document.getElementById("ticket-name").textContent = ticketInfo.name;
   document.getElementById("ticket-date").textContent = ticketInfo.date;
