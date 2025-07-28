@@ -753,7 +753,7 @@ function submitForm() {
   const name = document.getElementById("name").value.trim();
   const busNumber = parseInt(document.getElementById("busNumber").value.trim());
   const busRoute = document.getElementById("busRoute").value;
-  const dropLocation = destination[routeName];
+  // const dropLocation = destination[routeName];
 
   if (!name || isNaN(busNumber) || !busRoute) {
     alert("Please fill in all fields with valid input.");
@@ -791,7 +791,7 @@ ticketInfo = {
   slot: slotCode,
   date: formattedDateSecond,
   time: matchedTime,
-  drop: dropLocation
+  // drop: dropLocation
 };
 
   // Update UI
@@ -811,7 +811,7 @@ function showSecondTicket() {
   document.getElementById("ticket-date").textContent = ticketInfo.date;
   document.getElementById("ticket-slot").textContent = ticketInfo.slot;
   document.querySelector("#second-ticket .time").textContent = ticketInfo.time + " PM"; // format time
-  document.querySelector("#second-ticket .drop").textContent = ticketInfo.drop;
+  // document.querySelector("#second-ticket .drop").textContent = ticketInfo.drop;
 
   let secondsLeft = 10;
   document.getElementById("countdown").textContent = `${secondsLeft} Seconds`;
