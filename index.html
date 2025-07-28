@@ -806,12 +806,13 @@ ticketInfo = {
 function showSecondTicket() {
   document.getElementById("first-ticket").style.display = "none";
   document.getElementById("second-ticket").style.display = "block";
+  console.log(ticketInfo.drop);
 
   document.getElementById("ticket-name").textContent = ticketInfo.name;
   document.getElementById("ticket-date").textContent = ticketInfo.date;
   document.getElementById("ticket-slot").textContent = ticketInfo.slot;
   document.querySelector("#second-ticket .time").textContent = `${ticketInfo.time ?? "6:30"} PM`; // format time
-  document.querySelector("#second-ticket .drop").textContent = ticketInfo.drop;
+  document.querySelector("#second-ticket .route-labels .drop").textContent = ticketInfo.drop;
 
   let secondsLeft = 10;
   document.getElementById("countdown").textContent = `${secondsLeft} Seconds`;
