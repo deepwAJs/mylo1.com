@@ -788,7 +788,7 @@ function submitForm() {
 
   // Update UI
   document.getElementById("slot-code").textContent = slotCode;
-  document.querySelector("#first-ticket .time").textContent = matchedTime; // adjust to PM if needed
+  document.querySelector("#first-ticket .time").textContent = `${matchedTime} PM`; // adjust to PM if needed
   document.getElementById("booking-date").innerHTML = `BOOKING FOR: <br>${formattedDate}`;
 
   document.getElementById("popup-form").style.display = "none";
