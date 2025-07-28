@@ -725,6 +725,12 @@
   <script>
     let ticketInfo = {};
     let countdownInterval;
+    const destination = {
+  Thane: "Thane E Stn.",
+  Borivali: "Borivali Stn.",
+  Dahisar: "Dahisar Stn."
+};
+
     const locationTime = {
   Thane: {
     "6:30": [1, 2, 3, 4, 5, 6],
@@ -747,6 +753,7 @@ function submitForm() {
   const name = document.getElementById("name").value.trim();
   const busNumber = parseInt(document.getElementById("busNumber").value.trim());
   const busRoute = document.getElementById("busRoute").value;
+  const dropLocation = destination[routeName];
 
   if (!name || isNaN(busNumber) || !busRoute) {
     alert("Please fill in all fields with valid input.");
@@ -779,12 +786,13 @@ function submitForm() {
   const formattedDateSecond = today.toLocaleDateString('en-US', options);
 
   // Save for second ticket
-  ticketInfo = {
-    name: name,
-    slot: slotCode,
-    date: formattedDateSecond,
-    time: matchedTime
-  };
+ticketInfo = {
+  name: name,
+  slot: slotCode,
+  date: formattedDateSecond,
+  time: matchedTime,
+  drop: dropLocation
+};
 
   // Update UI
   document.getElementById("slot-code").textContent = slotCode;
@@ -803,6 +811,7 @@ function showSecondTicket() {
   document.getElementById("ticket-date").textContent = ticketInfo.date;
   document.getElementById("ticket-slot").textContent = ticketInfo.slot;
   document.querySelector("#second-ticket .time").textContent = ticketInfo.time + " PM"; // format time
+  document.querySelector("#second-ticket .drop").textContent = ticketInfo.drop;
 
   let secondsLeft = 10;
   document.getElementById("countdown").textContent = `${secondsLeft} Seconds`;
