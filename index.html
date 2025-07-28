@@ -725,38 +725,75 @@
   <script>
     let ticketInfo = {};
     let countdownInterval;
+    const locationTime = {
+  Thane: {
+    "6:30": [1, 2, 3, 4, 5, 6],
+    "6:45": [7, 8, 9],
+    "7:00": [10, 11, 12, 13],
+    "7:30": [14, 15],
+    "8:00": [16, 17, 18]
+  },
+  Dahisar: {
+    "6:30": [1]
+  },
+  Borivali: {
+    "6:30": [1, 2],
+    "7:00": [3, 4],
+    "7:30": [5]
+  }
+};
 
-    function submitForm() {
-      const name = document.getElementById("name").value.trim();
-      const busNumber = document.getElementById("busNumber").value.trim();
-      const busRoute = document.getElementById("busRoute").value;
+function submitForm() {
+  const name = document.getElementById("name").value.trim();
+  const busNumber = parseInt(document.getElementById("busNumber").value.trim());
+  const busRoute = document.getElementById("busRoute").value;
 
-      if (!name || !busNumber || !busRoute) {
-        alert("Please fill in all fields.");
-        return;
-      }
+  if (!name || isNaN(busNumber) || !busRoute) {
+    alert("Please fill in all fields with valid input.");
+    return;
+  }
 
-      const slotCode = `${busRoute}${busNumber}`;
-      const today = new Date();
-      const formattedDate = today.toLocaleDateString("en-GB").split("/").join(".");
+  // Get full route name
+  const routeName = busRoute === "T" ? "Thane" : busRoute === "D" ? "Dahisar" : "Borivali";
 
-      // Second ticket date formatted as "Jul 16, 2025"
-      const options = { year: 'numeric', month: 'short', day: '2-digit' };
-      const formattedDateSecond = today.toLocaleDateString('en-US', options);
-
-      // Save for second ticket
-      ticketInfo = {
-        name: name,
-        slot: slotCode,
-        date: formattedDateSecond
-      };
-
-      document.getElementById("slot-code").textContent = slotCode;
-      document.getElementById("booking-date").innerHTML = `BOOKING FOR: <br>${formattedDate}`;
-
-      document.getElementById("popup-form").style.display = "none";
-      document.getElementById("ticket-container").style.display = "block";
+  // Find matching time
+  let matchedTime = null;
+  for (const time in locationTime[routeName]) {
+    if (locationTime[routeName][time].includes(busNumber)) {
+      matchedTime = time;
+      break;
     }
+  }
+
+  if (!matchedTime) {
+    alert(`No valid time slot found for Bus Number ${busNumber} in ${routeName}.`);
+    return;
+  }
+
+  const slotCode = `${busRoute}${busNumber}`;
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("en-GB").split("/").join(".");
+
+  // Second ticket date formatted as "Jul 16, 2025"
+  const options = { year: 'numeric', month: 'short', day: '2-digit' };
+  const formattedDateSecond = today.toLocaleDateString('en-US', options);
+
+  // Save for second ticket
+  ticketInfo = {
+    name: name,
+    slot: slotCode,
+    date: formattedDateSecond,
+    time: matchedTime
+  };
+
+  // Update UI
+  document.getElementById("slot-code").textContent = slotCode;
+  document.querySelector("#first-ticket .time").textContent = matchedTime + " AM/PM"; // adjust to PM if needed
+  document.getElementById("booking-date").innerHTML = `BOOKING FOR: <br>${formattedDate}`;
+
+  document.getElementById("popup-form").style.display = "none";
+  document.getElementById("ticket-container").style.display = "block";
+}
 
     function showSecondTicket() {
       console.log("addsf")
