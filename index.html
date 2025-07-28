@@ -753,16 +753,16 @@ function submitForm() {
   const name = document.getElementById("name").value.trim();
   const busNumber = parseInt(document.getElementById("busNumber").value.trim());
   const busRoute = document.getElementById("busRoute").value;
+    // Get full route name
+  const routeName = busRoute === "T" ? "Thane" : busRoute === "D" ? "Dahisar" : "Borivali";
+
   const dropLocation = destination[routeName];
 
   if (!name || isNaN(busNumber) || !busRoute) {
     alert("Please fill in all fields with valid input.");
     return;
   }
-
-  // Get full route name
-  const routeName = busRoute === "T" ? "Thane" : busRoute === "D" ? "Dahisar" : "Borivali";
-
+  
   // Find matching time
   let matchedTime = null;
   for (const time in locationTime[routeName]) {
