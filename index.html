@@ -788,40 +788,37 @@ function submitForm() {
 
   // Update UI
   document.getElementById("slot-code").textContent = slotCode;
-  document.querySelector(".time").textContent = `${matchedTime} PM`; // adjust to PM if needed
+  document.querySelector("#first-ticket .time").textContent = `${matchedTime} PM`; // adjust to PM if needed
   document.getElementById("booking-date").innerHTML = `BOOKING FOR: <br>${formattedDate}`;
 
   document.getElementById("popup-form").style.display = "none";
   document.getElementById("ticket-container").style.display = "block";
 }
 
-    function showSecondTicket() {
-      console.log("addsf")
-      document.getElementById("first-ticket").style.display = "none";
-      document.getElementById("second-ticket").style.display = "block";
+function showSecondTicket() {
+  document.getElementById("first-ticket").style.display = "none";
+  document.getElementById("second-ticket").style.display = "block";
 
-      // Populate second ticket
-      document.getElementById("ticket-name").textContent = ticketInfo.name;
-      document.getElementById("ticket-date").textContent = ticketInfo.date;
-      document.getElementById("ticket-slot").textContent = ticketInfo.slot;
+  document.getElementById("ticket-name").textContent = ticketInfo.name;
+  document.getElementById("ticket-date").textContent = ticketInfo.date;
+  document.getElementById("ticket-slot").textContent = ticketInfo.slot;
+  document.querySelector("#second-ticket .time").textContent = ticketInfo.time + " PM"; // format time
 
-      // Reset countdown to 3 seconds
-      let secondsLeft = 10;
-      document.getElementById("countdown").textContent = `${secondsLeft} Seconds`;
+  let secondsLeft = 10;
+  document.getElementById("countdown").textContent = `${secondsLeft} Seconds`;
 
-      countdownInterval = setInterval(() => {
-        secondsLeft--;
-        document.getElementById("countdown").textContent = `${secondsLeft} Seconds`;
+  countdownInterval = setInterval(() => {
+    secondsLeft--;
+    document.getElementById("countdown").textContent = `${secondsLeft} Seconds`;
 
-        if (secondsLeft <= 0) {
-          clearInterval(countdownInterval);
-          document.getElementById("countdown").textContent = "00 Seconds";
-
-          // ? Show the transparent black overlay
-          // document.getElementById("ticket-overlay").style.display = "block";
-        }
-      }, 1000);
+    if (secondsLeft <= 0) {
+      clearInterval(countdownInterval);
+      document.getElementById("countdown").textContent = "00 Seconds";
+      // document.getElementById("ticket-overlay").style.display = "block";
     }
+  }, 1000);
+}
+
   </script>
 </body>
 
