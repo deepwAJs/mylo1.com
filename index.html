@@ -73,12 +73,27 @@
       font-size: 16px;
     }
 
-    .ticket-header .slot {
+/*     .ticket-header .slot {
       color: #fff;
       font-weight: 600;
       padding: 0 0.8rem;
       font-size: 48px;
-    }
+    } */
+
+    .ticket-header .slot {
+  color: #fff;
+  font-weight: 600;
+  font-size: 48px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;         /* fixed width */
+  height: 100%;        /* fill parent box */
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 
     .ticket-message {
       font-size: 0.95rem;
@@ -574,6 +589,16 @@
       pointer-events: none;
       display: none;
     }
+
+.ticket-header-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+      
   </style>
 </head>
 
